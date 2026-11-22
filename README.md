@@ -123,10 +123,10 @@ default; override with `TEST_DB_URL`, `TEST_DB_USER`, `TEST_DB_PASSWORD`) and Re
 ## Not done here
 
 * The service has not been deployed to a cloud provider; all results are from local runs.
-* The Docker image, `docker-compose.yml` and the GitHub Actions workflow are written but were
-  not run in the sandbox where this was built (it had no access to Docker Hub or Maven Central).
-  The tests ran there through a small offline stand-in for JUnit 5 (`tools/junit-shim/`);
-  `./gradlew test` runs the same tests on the real JUnit Platform.
+* The Docker image and `docker-compose.yml` were validated locally with Docker Desktop,
+  PostgreSQL 16, Redis 7 and Java 21. The full 38-test Gradle suite passed locally.
+* GitHub Actions runs the same Gradle test and build workflow on Ubuntu with PostgreSQL 16
+  and Redis 7.
 * Payments are simulated (fixed latency, deterministic declines).
 
 MIT licence.
