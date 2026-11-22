@@ -1,0 +1,1 @@
+{"scenario":"read","concurrency":64,"duration_s":20,"requests":27947,"throughput_rps":1397,"p50_ms":44.17,"p95_ms":51.88,"p99_ms":57.17,"max_ms":138.237,"status_counts":{"200":27947},"connection_errors":0,"order_retries_same_key":0}

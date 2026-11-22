@@ -1,0 +1,1 @@
+{"cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz", "cores": 2, "mem_gb": 7, "java": "21.0.12.1", "postgres": "16.15 (Ubuntu 16.15-0ubuntu0.24.04.1)", "redis": "7.0.15"}

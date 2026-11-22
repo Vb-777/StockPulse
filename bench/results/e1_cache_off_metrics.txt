@@ -1,0 +1,17 @@
+http_requests_total{route="/products/{sku}",status="200"} 28913
+http_request_duration_ms_bucket{route="/products/{sku}",le="0.5"} 5871
+http_request_duration_ms_bucket{route="/products/{sku}",le="1"} 13500
+http_request_duration_ms_bucket{route="/products/{sku}",le="2"} 20276
+http_request_duration_ms_bucket{route="/products/{sku}",le="5"} 24721
+http_request_duration_ms_bucket{route="/products/{sku}",le="10"} 26658
+http_request_duration_ms_bucket{route="/products/{sku}",le="25"} 27967
+http_request_duration_ms_bucket{route="/products/{sku}",le="50"} 28562
+http_request_duration_ms_bucket{route="/products/{sku}",le="100"} 28811
+http_request_duration_ms_bucket{route="/products/{sku}",le="250"} 28849
+http_request_duration_ms_bucket{route="/products/{sku}",le="500"} 28899
+http_request_duration_ms_bucket{route="/products/{sku}",le="1000"} 28913
+http_request_duration_ms_bucket{route="/products/{sku}",le="2500"} 28913
+http_request_duration_ms_bucket{route="/products/{sku}",le="5000"} 28913
+http_request_duration_ms_bucket{route="/products/{sku}",le="+Inf"} 28913
+http_request_duration_ms_sum{route="/products/{sku}"} 134719.1708140005
+http_request_duration_ms_count{route="/products/{sku}"} 28913

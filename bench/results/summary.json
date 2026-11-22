@@ -1,0 +1,7 @@
+{
+  "cache_hit_ratio": 0.9042,
+  "db_read_share_on": 0.0958,
+  "server_mean_ms_on": 1.669,
+  "server_mean_ms_off": 4.659,
+  "server_time_reduction_pct": 64.2
+}

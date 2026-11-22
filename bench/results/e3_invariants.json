@@ -1,0 +1,1 @@
+{"drain_seconds_after_load": 14.060571182, "stream_pending_after_drain": 0, "invariants": {"orders" : 9152, "pending" : 0, "confirmed" : 8245, "cancelled" : 907, "transitions" : 9152, "idempotency_rows_201" : 9152, "orders_without_key" : 0, "conservation_violations" : 0, "negative_stock_rows" : 0, "outbox_unpublished" : 0}}

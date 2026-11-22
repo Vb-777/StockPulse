@@ -1,0 +1,1 @@
+{"scenario":"order","concurrency":32,"duration_s":20,"requests":8174,"throughput_rps":409,"p50_ms":68.5,"p95_ms":133.76,"p99_ms":207.99,"max_ms":472.793,"status_counts":{"201":8174},"connection_errors":0,"order_retries_same_key":0}

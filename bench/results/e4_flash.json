@@ -1,0 +1,1 @@
+{"scenario":"flash","concurrency":64,"duration_s":10,"requests":3175,"throughput_rps":318,"p50_ms":155.95,"p95_ms":422.49,"p99_ms":871.54,"max_ms":1186.554,"status_counts":{"201":1000,"409":2175},"connection_errors":0,"order_retries_same_key":0}

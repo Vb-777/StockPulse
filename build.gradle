@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.stockpulse'
+version = '1.0.0'
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(21) }
+}
+
+application {
+    mainClass = 'com.stockpulse.App'
+    // Servers run in UTC. It also avoids a real failure: the JDBC driver sends the JVM's zone to
+    // PostgreSQL at connect time, and some servers reject legacy names such as Asia/Calcutta.
+    applicationDefaultJvmArgs = ['-Duser.timezone=UTC']
+}
+
+// Normal builds resolve from Maven Central. `-PofflineLibs=<dir>` builds from jars in a local
+// directory instead (used where Maven Central is unreachable); see tools/junit-shim/README.md.
+def offline = project.findProperty('offlineLibs')
+
+repositories {
+    if (offline) { flatDir { dirs offline } } else { mavenCentral() }
+}
+
+dependencies {
+    if (offline) {
+        implementation name: 'postgresql-42.7.7'
+        testImplementation files("${buildDir}/junit-shim/junit-shim.jar")
+    } else {
+        implementation 'org.postgresql:postgresql:42.7.7'
+        testImplementation platform('org.junit:junit-bom:5.11.4')
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-Xlint:all,-serial,-processing' << '-Werror'
+}
+
+jar {
+    manifest { attributes 'Main-Class': application.mainClass }
+    // Self-contained jar: `java -jar stockpulse.jar` needs nothing else on the classpath.
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
+}
+
+if (!offline) {
+    test {
+        useJUnitPlatform()
+        jvmArgs '-Duser.timezone=UTC'
+        testLogging { events 'failed'; exceptionFormat 'full' }
+    }
+}
+
+// ---- offline-only: compile the JUnit shim and run tests with it (see tools/junit-shim/README.md)
+if (offline) {
+    def shimClasses = layout.buildDirectory.dir('junit-shim/classes')
+    tasks.register('compileJunitShim', JavaCompile) {
+        source = fileTree('tools/junit-shim/src')
+        destinationDirectory = shimClasses
+        classpath = files()
+        options.compilerArgs = []
+    }
+    tasks.register('junitShimJar', Jar) {
+        dependsOn 'compileJunitShim'
+        from shimClasses
+        destinationDirectory = layout.buildDirectory.dir('junit-shim')
+        archiveFileName = 'junit-shim.jar'
+    }
+    tasks.named('compileTestJava') { dependsOn 'junitShimJar' }
+    tasks.named('test') { enabled = false }
+    tasks.register('shimTest', JavaExec) {
+        dependsOn 'testClasses'
+        classpath = sourceSets.test.runtimeClasspath
+        mainClass = 'org.junit.shim.ShimRunner'
+        jvmArgs '-Duser.timezone=UTC'
+        args sourceSets.test.output.classesDirs.files.find { it.path.contains('java') }.path
+        environment System.getenv()
+    }
+    tasks.named('check') { dependsOn 'shimTest' }
+}
